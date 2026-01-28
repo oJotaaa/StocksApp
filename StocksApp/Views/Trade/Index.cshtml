@@ -1,0 +1,24 @@
+﻿@model StocksApp.ViewModels.StockTrade
+
+@{
+    ViewData["Title"] = "Trade Index";
+}
+
+<div class="trading-panel">
+
+    <input type="hidden" id="StockSymbol" value="@Model.StockSymbol" />
+    <input type="hidden" id="FinnhubToken" value="@ViewBag.apiKey" />
+
+    <h2>Trade Details</h2>
+
+    <div class="stock-info">
+        <h3 class="stock-title">@Model.StockName (@Model.StockSymbol)</h3>
+
+        <h1 id="stockPrice" class="price-text">$ @Model.Price</h1>
+    </div>
+
+</div>
+
+@{
+    <script src="~/Scripts/tradeIndex.js"> </script>
+}
