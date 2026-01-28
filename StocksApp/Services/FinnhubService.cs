@@ -27,7 +27,12 @@ namespace StocksApp.Services
                 var companyProfile = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse, options);
                 return companyProfile;
             }
-            return null;
+            else
+            {
+                string errorResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error fetching company profile: {errorResponse}");
+                return null;
+            }
         }
 
         public async Task<Dictionary<string, object>?> GetStockPriceQuote(string stockSymbol)
@@ -43,7 +48,12 @@ namespace StocksApp.Services
                 var stockData = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse, options);
                 return stockData;
             }
-            return null;
+            else
+            {
+                string errorResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error fetching stock price quote: {errorResponse}");
+                return null;
+            }
         }
     }
 }
