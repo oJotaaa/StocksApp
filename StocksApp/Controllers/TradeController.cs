@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using StocksApp.Services.Interfaces;
+using StocksApp.ServiceContracts;
 using StocksApp.ViewModels;
 using System.Text.Json;
 
@@ -9,14 +9,16 @@ namespace StocksApp.Controllers
     public class TradeController : Controller
     {
         private readonly TradingOptions _tradingOptions;
-        private readonly IFinnhubService _finnhubService;
         private readonly IConfiguration _configuration;
+        private readonly IFinnhubService _finnhubService;
+        private readonly IStocksService _stocksService;
 
-        public TradeController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService, IConfiguration configuration)
+        public TradeController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService, IConfiguration configuration, IStocksService stocksService)
         {
             _tradingOptions = tradingOptions.Value;
             _finnhubService = finnhubService;
             _configuration = configuration;
+            _stocksService = stocksService;
         }
 
         [Route("/")]
