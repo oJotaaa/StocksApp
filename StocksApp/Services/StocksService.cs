@@ -57,7 +57,7 @@ namespace StocksApp.Services
 
         public Task<List<BuyOrderResponse>> GetBuyOrders()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_buyOrders.Select(temp => temp.ToBuyOrderResponse()).ToList());
         }
 
         public Task<List<SellOrderResponse>> GetSellOrders()
