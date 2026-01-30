@@ -1,4 +1,4 @@
-﻿using StocksApp.Services.Interfaces;
+﻿using StocksApp.ServiceContracts;
 using System.Text.Json;
 
 namespace StocksApp.Services
