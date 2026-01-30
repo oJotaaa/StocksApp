@@ -39,7 +39,20 @@ namespace StocksApp.Services
 
         public Task<SellOrderResponse> CreateSellOrder(SellOrderRequest? sellOrderRequest)
         {
-            throw new NotImplementedException();
+            // Check if sellOrderRequest is null
+            if (sellOrderRequest == null)
+                throw new ArgumentNullException(nameof(sellOrderRequest));
+
+            // Validate all properties of sellOrderRequest
+            ValidationHelper.ModelValidation(sellOrderRequest);
+
+            // Convert sellOrderRequest to SellOrder Entitie and put a new orderID
+            SellOrder sellOrder = sellOrderRequest.ToSellOrder();
+            sellOrder.SellOrderID = Guid.NewGuid();
+            _sellOrders.Add(sellOrder);
+
+            // Return a sellOrderResponse
+            return Task.FromResult(sellOrder.ToSellOrderResponse());
         }
 
         public Task<List<BuyOrderResponse>> GetBuyOrders()
