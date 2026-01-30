@@ -348,5 +348,60 @@ namespace StocksTests
         }
 
         #endregion
+
+        #region GetAllSellOrdersTests
+
+        // When you invoke this method, by default, the returned list should be empty.
+        [Fact]
+        public async Task GetAllSellOrders_EmptyList()
+        {
+            // Act
+            List<SellOrderResponse> sellOrderResponses = await _stocksService.GetSellOrders();
+
+            // Assert
+            Assert.Empty(sellOrderResponses);
+        }
+
+        // When you first add few buy orders using CreateSellOrder() method; and then invoke GetAllSellOrders() method; the returned list should contain all the same sell orders.
+        [Fact]
+        public async Task GetSellOrders_AddFewOrders()
+        {
+            // Arrange
+            List<SellOrderResponse> sellOrderResponses = new List<SellOrderResponse>();
+
+            SellOrderRequest sellOrderRequest1 = new SellOrderRequest()
+            {
+                StockName = "Stockname",
+                StockSymbol = "SSS",
+                DateAndTimeOfOrder = DateTime.Parse("2005-01-01"),
+                Quantity = 10,
+                Price = 50
+            };
+
+            SellOrderRequest sellOrderRequest2 = new SellOrderRequest()
+            {
+                StockName = "StockSample",
+                StockSymbol = "DDD",
+                DateAndTimeOfOrder = DateTime.Parse("2007-01-01"),
+                Quantity = 5,
+                Price = 60
+            };
+
+            SellOrderResponse sellOrderResponse1 = await _stocksService.CreateSellOrder(sellOrderRequest1);
+            SellOrderResponse sellOrderResponse2 = await _stocksService.CreateSellOrder(sellOrderRequest2);
+
+            sellOrderResponses.Add(sellOrderResponse1);
+            sellOrderResponses.Add(sellOrderResponse2);
+
+            // Act
+            List<SellOrderResponse> allOrders = await _stocksService.GetSellOrders();
+
+            // Assert
+            for (int i = 0; i < allOrders.Count; i++)
+            {
+                Assert.Equal(sellOrderResponses[i], allOrders[i]);
+            }
+        }
+        #endregion
     }
 }
