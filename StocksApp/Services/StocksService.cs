@@ -62,7 +62,7 @@ namespace StocksApp.Services
 
         public Task<List<SellOrderResponse>> GetSellOrders()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_sellOrders.Select(temp => temp.ToSellOrderResponse()).ToList());
         }
     }
 }
