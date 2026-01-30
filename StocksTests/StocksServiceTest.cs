@@ -292,5 +292,61 @@ namespace StocksTests
             Assert.NotEqual(sellOrderResponse.SellOrderID, Guid.Empty);
         }
         #endregion
+
+        #region GetAllBuyOrdersTests
+
+        // When you invoke this method, by default, the returned list should be empty.
+        [Fact]
+        public async Task GetAllBuyOrders_EmptyList()
+        {
+            // Act
+            List<BuyOrderResponse> buyOrderResponses = await _stocksService.GetBuyOrders();
+
+            // Assert
+            Assert.Empty(buyOrderResponses);
+        }
+
+        // When you first add few buy orders using CreateBuyOrder() method; and then invoke GetAllBuyOrders() method; the returned list should contain all the same buy orders.
+        [Fact]
+        public async Task GetBuyOrders_AddFewOrders()
+        {
+            // Arrange
+            List<BuyOrderResponse> buyOrderResponses = new List<BuyOrderResponse>();
+
+            BuyOrderRequest buyOrderRequest1 = new BuyOrderRequest()
+            {
+                StockName = "Stockname",
+                StockSymbol = "SSS",
+                DateAndTimeOfOrder = DateTime.Parse("2005-01-01"),
+                Quantity = 10,
+                Price = 50
+            };
+
+            BuyOrderRequest buyOrderRequest2 = new BuyOrderRequest()
+            {
+                StockName = "StockSample",
+                StockSymbol = "DDD",
+                DateAndTimeOfOrder = DateTime.Parse("2007-01-01"),
+                Quantity = 5,
+                Price = 60
+            };
+
+            BuyOrderResponse buyOrderResponse1 = await _stocksService.CreateBuyOrder(buyOrderRequest1);
+            BuyOrderResponse buyOrderResponse2 = await _stocksService.CreateBuyOrder(buyOrderRequest2);
+
+            buyOrderResponses.Add(buyOrderResponse1);
+            buyOrderResponses.Add(buyOrderResponse2);
+
+            // Act
+            List<BuyOrderResponse> allOrders = await _stocksService.GetBuyOrders();
+
+            // Assert
+            for (int i = 0;  i < allOrders.Count; i++)
+            {
+                Assert.Equal(buyOrderResponses[i], allOrders[i]);
+            }
+        }
+
+        #endregion
     }
 }
