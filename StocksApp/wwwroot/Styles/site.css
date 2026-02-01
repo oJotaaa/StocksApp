@@ -1,0 +1,123 @@
+﻿/* --- Estilos da Página de Trade (Index) --- */
+.trading-container {
+    display: flex;
+    gap: 30px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    max-width: 900px;
+    margin: 40px auto;
+    align-items: center;
+}
+
+/* Painel Esquerdo: Preço */
+.stock-info-panel {
+    flex: 1;
+    border-right: 1px solid #eee;
+    padding-right: 30px;
+}
+
+.stock-title {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.stock-symbol-text {
+    color: #7f8c8d;
+    font-weight: normal;
+    font-size: 1.4rem;
+}
+
+.big-price {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 10px 0;
+    letter-spacing: -1px;
+}
+
+.price-label {
+    color: #e74c3c; /* Vermelho suave */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+/* Painel Direito: Formulário */
+.order-panel {
+    flex: 0.8;
+    padding-left: 10px;
+}
+
+.panel-title {
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+    .form-input:focus {
+        border-color: #3498db;
+        outline: none;
+    }
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.1s;
+}
+
+    .btn:active {
+        transform: scale(0.98);
+    }
+
+.btn-buy {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-sell {
+    background-color: #c0392b;
+    color: white;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .trading-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stock-info-panel {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 30px;
+        padding-right: 0;
+        margin-bottom: 30px;
+    }
+}
