@@ -7,6 +7,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
 builder.Services.AddScoped<IFinnhubService, FinnhubService>();
+builder.Services.AddSingleton<IStocksService, StocksService>();
 
 var app = builder.Build();
 app.UseStaticFiles();
