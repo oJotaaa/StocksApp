@@ -12,7 +12,6 @@ namespace StocksApp.ServiceContracts.DTO
         [Required(ErrorMessage = "StockName can't be empty")]
         public string? StockName { get; set; }
 
-        [MinimumDate]
         public DateTime DateAndTimeOfOrder { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Quantity must be 1 to 100000")]
