@@ -1,22 +1,53 @@
-﻿@model StocksApp.ViewModels.StockTrade
+﻿@model StockTrade
 
 @{
-    ViewData["Title"] = "Trade Index";
+    ViewData["Title"] = "Trade";
 }
 
-<div class="trading-panel">
+<div class="trading-container">
 
-    <input type="hidden" id="StockSymbol" value="@Model.StockSymbol" />
-    <input type="hidden" id="FinnhubToken" value="@ViewBag.apiKey" />
+    <div class="stock-info-panel">
+        <div class="stock-header">
+            <h1 class="stock-title">
+                @Model.StockName <span class="stock-symbol-text">(@Model.StockSymbol)</span>
+            </h1>
+        </div>
 
-    <h2>Trade Details</h2>
-
-    <div class="stock-info">
-        <h3 class="stock-title">@Model.StockName (@Model.StockSymbol)</h3>
-
-        <h1 id="stockPrice" class="price-text">$ @Model.Price</h1>
+        <div class="price-display">
+            <h2 class="big-price">
+                <span id="price">@Model.Price.ToString("c")</span>
+            </h2>
+            <p class="price-label">Stock Price</p>
+        </div>
     </div>
 
+    <div class="order-panel">
+        <h3 class="panel-title">New Order</h3>
+
+        <form method="post">
+
+            <input type="hidden" id="FinnhubToken" value="@ViewBag.apiKey" />
+            <input type="hidden" id="StockSymbol" name="StockSymbol" value="@Model.StockSymbol" />
+            <input type="hidden" id="stockPrice" name="Price" value="@Model.Price" />
+            <input type="hidden" name="StockName" value="@Model.StockName" />
+
+            <div class="form-group">
+                <label for="Quantity" class="form-label">Quantity:</label>
+                <input type="number" id="Quantity" name="Quantity" value="@Model.Quantity" min="1" max="100000" class="form-input" required />
+            </div>
+
+            <div class="button-group">
+                <button type="submit" asp-controller="Trade" asp-action="SellOrder" class="btn btn-sell">
+                    ↓ Sell
+                </button>
+
+                <button type="submit" asp-controller="Trade" asp-action="BuyOrder" class="btn btn-buy">
+                    ↑ Buy
+                </button>
+            </div>
+
+        </form>
+    </div>
 </div>
 
 @{

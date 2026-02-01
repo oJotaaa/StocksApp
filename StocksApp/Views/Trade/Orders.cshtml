@@ -1,0 +1,43 @@
+﻿@model Orders
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<link href="~/Styles/orders.css" rel="stylesheet" />
+
+<div class="orders-container">
+    <div class="orders-column">
+        <h2 class="column-title">Buy Orders</h2>
+        @foreach (var buyOrder in Model.BuyOrders!)
+        {
+            <div class="order-box">
+                <div class="order-header">
+                    <h3 class="stock-name">@buyOrder.StockName <span class="stock-symbol">(@buyOrder.StockSymbol)</span></h3>
+                </div>
+                <div class="order-details">
+                    @buyOrder.Quantity shares at @buyOrder.Price.ToString("c")
+                </div>
+                <p class="trade-amount">Trade amount: @buyOrder.TradeAmount.ToString("c")</p>
+                <p class="order-date">@buyOrder.DateAndTimeOfOrder.ToString("dd MMMM yyyy hh:mm tt")</p>
+            </div>
+        }
+    </div>
+
+    <div class="orders-column">
+        <h2 class="column-title">Sell Orders</h2>
+        @foreach (var sellOrder in Model.SellOrders!)
+        {
+            <div class="order-box">
+                <div class="order-header">
+                    <h3 class="stock-name">@sellOrder.StockName <span class="stock-symbol">(@sellOrder.StockSymbol)</span></h3>
+                </div>
+                <div class="order-details">
+                    @sellOrder.Quantity shares at @sellOrder.Price.ToString("c")
+                </div>
+                <p class="trade-amount">Trade amount: @sellOrder.TradeAmount.ToString("c")</p>
+                <p class="order-date">@sellOrder.DateAndTimeOfOrder.ToString("dd MMMM yyyy hh:mm tt")</p>
+            </div>
+        }
+    </div>
+</div>
