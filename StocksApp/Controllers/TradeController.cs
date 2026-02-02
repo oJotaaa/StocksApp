@@ -31,6 +31,7 @@ namespace StocksApp.Controllers
                 _tradingOptions.DefaultStockSymbol = "MSFT";
 
             string? defaultStockSymbol = _tradingOptions.DefaultStockSymbol;
+            uint defaultOrderQuantity = _tradingOptions.DefaultOrderQuantity;
             var companyProfile = await _finnhubService.GetCompanyProfile(defaultStockSymbol!);
             var stockPriceQuote = await _finnhubService.GetStockPriceQuote(defaultStockSymbol!);
 
@@ -43,7 +44,7 @@ namespace StocksApp.Controllers
                     StockSymbol = defaultStockSymbol,
                     StockName = companyProfile != null && companyProfile.ContainsKey("name") ? ((JsonElement)companyProfile["name"]).GetString() : "N/A",
                     Price = stockPriceQuote != null && stockPriceQuote.ContainsKey("c") ? ((JsonElement)stockPriceQuote["c"]).GetDouble() : 0.0,
-                    Quantity = 0
+                    Quantity = defaultOrderQuantity
                 };
             }
 
