@@ -1,6 +1,6 @@
 ﻿const token = document.getElementById('FinnhubToken').value;
 const symbol = document.getElementById('StockSymbol').value;
-const priceElement = document.getElementById('stockPrice');
+const priceElement = document.getElementById('price');
 
 const socket = new WebSocket(`wss://ws.finnhub.io?token=${token}`);
 
