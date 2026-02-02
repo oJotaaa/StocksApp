@@ -1,6 +1,7 @@
 ﻿const token = document.getElementById('FinnhubToken').value;
 const symbol = document.getElementById('StockSymbol').value;
-const priceElement = document.getElementById('price');
+const priceDisplayElement = document.getElementById('priceDisplay');
+const priceElement = document.getElementById('Price');
 
 const socket = new WebSocket(`wss://ws.finnhub.io?token=${token}`);
 
@@ -17,7 +18,8 @@ socket.addEventListener('message', function (event) {
     if (eventData.type === 'trade') {
         const newPrice = eventData.data[eventData.data.length - 1].p;
 
-        priceElement.innerText = "$ " + newPrice.toFixed(2);
+        priceDisplayElement.innerText = "$ " + newPrice.toFixed(2);
+        priceElement.value = newPrice;
 
         console.log('Preço atualizado para: ' + newPrice);
     }
