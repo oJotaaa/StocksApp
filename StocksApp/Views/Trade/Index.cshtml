@@ -15,7 +15,7 @@
 
         <div class="price-display">
             <h2 class="big-price">
-                <span id="price">@Model.Price.ToString("c")</span>
+                <span id="priceDisplay">@Model.Price.ToString("c")</span>
             </h2>
             <p class="price-label">Stock Price</p>
         </div>
@@ -27,13 +27,14 @@
         <form method="post">
 
             <input type="hidden" id="FinnhubToken" value="@ViewBag.apiKey" />
-            <input type="hidden" id="StockSymbol" name="StockSymbol" value="@Model.StockSymbol" />
-            <input type="hidden" id="stockPrice" name="Price" value="@Model.Price" />
-            <input type="hidden" name="StockName" value="@Model.StockName" />
+            <input type="hidden" asp-for="StockSymbol" />
+            <input type="hidden" asp-for="Price" />
+            <input type="hidden" asp-for="StockName" />
 
             <div class="form-group">
-                <label for="Quantity" class="form-label">Quantity:</label>
-                <input type="number" id="Quantity" name="Quantity" value="@Model.Quantity" min="1" max="100000" class="form-input" required />
+                <label asp-for="Quantity" class="form-label">Quantity:</label>
+                <input type="number" asp-for="Quantity" class="form-input" required />
+                <span asp-validation-for="Quantity" class="price-label"></span>
             </div>
 
             <div class="button-group">
@@ -50,6 +51,9 @@
     </div>
 </div>
 
-@{
+@section scripts{
     <script src="~/Scripts/tradeIndex.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" asp-fallback-test="window.jQuery" asp-fallback-src="~/Scripts/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js" asp-fallback-test="window.jQuery.validator" asp-fallback-src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" asp-fallback-test="window.jQuery.validator.unubtrusive" asp-fallback-src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 }
