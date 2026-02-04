@@ -9,9 +9,9 @@ namespace StocksTests
     {
         private readonly IStocksService _stocksService;
 
-        public StocksServiceTest()
+        public StocksServiceTest(IStocksService stocksService)
         {
-            _stocksService = new StocksService();
+            _stocksService = stocksService;
         }
 
         #region CreateBuyOrderTests
