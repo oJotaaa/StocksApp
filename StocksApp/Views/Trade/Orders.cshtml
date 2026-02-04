@@ -6,7 +6,15 @@
 
 <link href="~/Styles/orders.css" rel="stylesheet" />
 
+<div class="page-header">
+    <h1 class="page-title">Orders Log</h1>
+    <a asp-controller="Trade" asp-action="OrdersPDF" class="btn-pdf">
+        Download as PDF
+    </a>
+</div>
+
 <div class="orders-container">
+
     <div class="orders-column">
         <h2 class="column-title">Buy Orders</h2>
         @foreach (var buyOrder in Model.BuyOrders!)
