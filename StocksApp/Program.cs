@@ -16,6 +16,9 @@ builder.Services.AddScoped<IFinnhubService, FinnhubService>();
 builder.Services.AddScoped<IStocksService, StocksService>();
 
 var app = builder.Build();
+
+Rotativa.AspNetCore.RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
+
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();
