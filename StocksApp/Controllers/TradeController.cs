@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Rotativa.AspNetCore;
 using StocksApp.ServiceContracts;
 using StocksApp.ServiceContracts.DTO;
 using StocksApp.ViewModels;
@@ -7,6 +8,7 @@ using System.Text.Json;
 
 namespace StocksApp.Controllers
 {
+    [Route("[controller]")]
     public class TradeController : Controller
     {
         private readonly TradingOptions _tradingOptions;
@@ -54,7 +56,7 @@ namespace StocksApp.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/[action]")]
+        [Route("[action]")]
         public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrder)
         {
             if (!ModelState.IsValid) 
@@ -77,7 +79,7 @@ namespace StocksApp.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/[action]")]
+        [Route("[action]")]
         public async Task<IActionResult> SellOrder(SellOrderRequest sellOrder)
         {
             if (!ModelState.IsValid)
@@ -100,7 +102,7 @@ namespace StocksApp.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/[action]")]
+        [Route("[action]")]
         public async Task<IActionResult> Orders()
         {
             List<BuyOrderResponse> buyOrders = await _stocksService.GetBuyOrders();
@@ -112,6 +114,31 @@ namespace StocksApp.Controllers
             };
 
             return View(orders);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> OrdersPDF()
+        {
+            List<BuyOrderResponse> buyOrders = await _stocksService.GetBuyOrders();
+            List<SellOrderResponse> sellOrders = await _stocksService.GetSellOrders();
+            Orders orders = new Orders()
+            {
+                BuyOrders = buyOrders,
+                SellOrders = sellOrders
+            };
+
+            return new ViewAsPdf("OrdersPDF", orders, ViewData)
+            {
+                PageMargins = new Rotativa.AspNetCore.Options.Margins()
+                {
+                    Top = 20,
+                    Right = 20,
+                    Bottom = 20,
+                    Left = 20
+                },
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
+            };
         }
     }
 }
