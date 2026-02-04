@@ -7,7 +7,23 @@
     <link href="~/Styles/site.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a asp-controller="Trade" asp-action="Index" class="nav-brand">
+                StocksApp
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a asp-controller="Trade" asp-action="Index" class="nav-link">Trade</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Trade" asp-action="Orders" class="nav-link">Orders</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container body-content">
         @RenderBody()
     </div>
 
