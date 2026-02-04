@@ -1,4 +1,5 @@
-﻿using StocksApp.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StocksApp.Entities;
 using StocksApp.ServiceContracts;
 using StocksApp.ServiceContracts.DTO;
 using StocksApp.ServiceContracts.Extensions;
@@ -9,17 +10,15 @@ namespace StocksApp.Services
     public class StocksService : IStocksService
     {
         // Private fields
-        private readonly List<BuyOrder> _buyOrders;
-        private readonly List<SellOrder> _sellOrders;
+        private readonly StockMarketDbContext _db;
 
         // Constructor
-        public StocksService() 
+        public StocksService(StockMarketDbContext stockMarketDbContext) 
         {
-            _buyOrders = new List<BuyOrder>();
-            _sellOrders = new List<SellOrder>();
+            _db = stockMarketDbContext;
         }
 
-        public Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? buyOrderRequest)
+        public async Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? buyOrderRequest)
         {
             // Check if buyOrderRequest is null
             if (buyOrderRequest == null)
@@ -31,13 +30,14 @@ namespace StocksApp.Services
             // Convert buyOrderRequest to BuyOrder Entitie and put a new orderID
             BuyOrder buyOrder = buyOrderRequest.ToBuyOrder();
             buyOrder.BuyOrderID = Guid.NewGuid();
-            _buyOrders.Add(buyOrder);
+            await _db.BuyOrders.AddAsync(buyOrder);
+            await _db.SaveChangesAsync();
 
             // Return a buyOrderReponse
-            return Task.FromResult(buyOrder.ToBuyOrderResponse());
+            return buyOrder.ToBuyOrderResponse();
         }
 
-        public Task<SellOrderResponse> CreateSellOrder(SellOrderRequest? sellOrderRequest)
+        public async Task<SellOrderResponse> CreateSellOrder(SellOrderRequest? sellOrderRequest)
         {
             // Check if sellOrderRequest is null
             if (sellOrderRequest == null)
@@ -49,20 +49,24 @@ namespace StocksApp.Services
             // Convert sellOrderRequest to SellOrder Entitie and put a new orderID
             SellOrder sellOrder = sellOrderRequest.ToSellOrder();
             sellOrder.SellOrderID = Guid.NewGuid();
-            _sellOrders.Add(sellOrder);
+            await _db.SellOrders.AddAsync(sellOrder);
+            await _db.SaveChangesAsync();
 
             // Return a sellOrderResponse
-            return Task.FromResult(sellOrder.ToSellOrderResponse());
+            return sellOrder.ToSellOrderResponse();
         }
 
-        public Task<List<BuyOrderResponse>> GetBuyOrders()
+        public async Task<List<BuyOrderResponse>> GetBuyOrders()
         {
-            return Task.FromResult(_buyOrders.Select(temp => temp.ToBuyOrderResponse()).ToList());
+            List<BuyOrder> buyOrders = await _db.BuyOrders.Select(temp => temp).ToListAsync();
+            return buyOrders.Select(temp => temp.ToBuyOrderResponse()).ToList();
         }
 
-        public Task<List<SellOrderResponse>> GetSellOrders()
+        public async Task<List<SellOrderResponse>> GetSellOrders()
         {
-            return Task.FromResult(_sellOrders.Select(temp => temp.ToSellOrderResponse()).ToList());
+            List<SellOrder> sellOrders = await _db.SellOrders.Select(temp => temp).ToListAsync();
+
+            return sellOrders.Select(temp => temp.ToSellOrderResponse()).ToList();
         }
     }
 }
