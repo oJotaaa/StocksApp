@@ -109,3 +109,36 @@ h1, h2, h3 {
         flex-direction: column;
     }
 }
+
+.page-header {
+    display: flex;
+    justify-content: space-between; /* Empurra um para cada ponta */
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Estilo do Botão de PDF */
+.btn-pdf {
+    display: inline-block;
+    background-color: #007bff; /* Azul profissional */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-pdf:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o rato */
+    color: white;
+    text-decoration: none;
+}
