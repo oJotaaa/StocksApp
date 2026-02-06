@@ -25,25 +25,30 @@ namespace StocksApp.Controllers
         }
 
         [Route("/")]
-        [Route("[action]")]
+        [Route("[action]/{stockSymbol?}")]
         [Route("~/[controller]")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? stockSymbol)
         {
             if (string.IsNullOrEmpty(_tradingOptions.DefaultStockSymbol))
                 _tradingOptions.DefaultStockSymbol = "MSFT";
 
-            string? defaultStockSymbol = _tradingOptions.DefaultStockSymbol;
-            uint defaultOrderQuantity = _tradingOptions.DefaultOrderQuantity;
-            var companyProfile = await _finnhubService.GetCompanyProfile(defaultStockSymbol!);
-            var stockPriceQuote = await _finnhubService.GetStockPriceQuote(defaultStockSymbol!);
+            string? selectedStockSymbol;
+            if (string.IsNullOrEmpty(stockSymbol)) 
+                selectedStockSymbol = _tradingOptions.DefaultStockSymbol;
+            else
+                selectedStockSymbol = stockSymbol;
 
-            StockTrade stockTrade = new StockTrade() { StockSymbol = defaultStockSymbol };
+            uint defaultOrderQuantity = _tradingOptions.DefaultOrderQuantity;
+            var companyProfile = await _finnhubService.GetCompanyProfile(selectedStockSymbol!);
+            var stockPriceQuote = await _finnhubService.GetStockPriceQuote(selectedStockSymbol!);
+
+            StockTrade stockTrade = new StockTrade() { StockSymbol = selectedStockSymbol };
 
             if (companyProfile != null && stockPriceQuote != null)
             {
                 stockTrade = new StockTrade()
                 {
-                    StockSymbol = defaultStockSymbol,
+                    StockSymbol = selectedStockSymbol,
                     StockName = companyProfile != null && companyProfile.ContainsKey("name") ? ((JsonElement)companyProfile["name"]).GetString() : "N/A",
                     Price = stockPriceQuote != null && stockPriceQuote.ContainsKey("c") ? ((JsonElement)stockPriceQuote["c"]).GetDouble() : 0.0,
                     Quantity = defaultOrderQuantity
