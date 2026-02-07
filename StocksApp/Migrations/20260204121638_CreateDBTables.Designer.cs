@@ -11,7 +11,7 @@ using StocksApp.Entities;
 
 namespace StocksApp.Migrations
 {
-    [DbContext(typeof(StockMarketDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20260204121638_CreateDBTables")]
     partial class CreateDBTables
     {
