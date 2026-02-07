@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Stock>
+
+@{
+    ViewBag.Title = "Explore Stocks";
+}
+
+<link rel="stylesheet" href="~/Styles/explore.css" />
+
+<div class="explore-container">
+
+    <div class="stock-list-sidebar">
+        <h3>Stocks</h3>
+        <ul class="stock-list">
+            @foreach (Stock stock in Model)
+            {
+                <li>
+                    <a asp-controller="Stocks" asp-action="Explore" asp-route-stock="@stock.StockSymbol" class="stock-item">
+                        <span class="fw-bold">@stock.StockName</span>
+                        <span class="text-muted">(@stock.StockSymbol)</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="stock-details-panel">
+        @if (ViewBag.Stock != null)
+        {
+            @await Component.InvokeAsync("SelectedStock", new { stockSymbol = ViewBag.Stock })
+        }
+    </div>
+
+</div>
