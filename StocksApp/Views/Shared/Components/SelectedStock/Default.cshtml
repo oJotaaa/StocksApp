@@ -1,0 +1,42 @@
+﻿@model Dictionary<string, object>
+
+<div class="stock-details-card">
+
+    <div class="stock-info-header">
+
+        @if (Model.ContainsKey("logo") && Model["logo"] != null)
+        {
+            <img src="@Model["logo"]" alt="@Model["name"] Logo" class="stock-logo" />
+        }
+
+        <div class="stock-title">
+            <h2>@Model["name"] (@Model["stockSymbol"])</h2>
+
+            @if (Model.ContainsKey("finnhubIndustry"))
+            {
+                <span class="stock-tag">@Model["finnhubIndustry"]</span>
+            }
+
+            @if (Model.ContainsKey("exchange"))
+            {
+                <div class="exchange-info">
+                    <strong>Exchange:</strong> <span class="stock-tag">@Model["exchange"]</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="stock-price">
+        <span class="currency">$</span> @Model["price"]
+    </div>
+
+    <div>
+        <a asp-controller="Trade"
+           asp-action="Index"
+           asp-route-stockSymbol="@Model["stockSymbol"]"
+           class="btn-trade">
+            Trade Now
+        </a>
+    </div>
+
+</div>
