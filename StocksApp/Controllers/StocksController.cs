@@ -21,7 +21,7 @@ namespace StocksApp.Controllers
 
         [HttpGet]
         [Route("[action]/{stock?}")]
-        public async Task<IActionResult> Explore(string stock)
+        public async Task<IActionResult> Explore(string? stock)
         {
             ViewBag.Stock = stock;
             string? topPopularStocksString = _tradingOptions.Top25PopularStocks;
@@ -30,7 +30,7 @@ namespace StocksApp.Controllers
             List<Dictionary<string, string>>? stocksFromGetStocks = await _finnhubService.GetStocks();
 
             List<Stock> stocks = stocksFromGetStocks!.Where(stock => topPopularStocks.Contains(stock["symbol"])).Select(stock => new Stock() { StockName = stock["description"], StockSymbol = stock["symbol"] }).ToList();
-            return View(stocks);
+            return View("Explore", stocks);
         }
     }
 }
