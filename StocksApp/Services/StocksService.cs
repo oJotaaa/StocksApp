@@ -12,15 +12,20 @@ namespace StocksApp.Services
     {
         // Private fields
         private readonly IStocksRepository _stocksRepository;
+        private readonly ILogger<StocksService> _logger;
 
         // Constructor
-        public StocksService(IStocksRepository stocksRepository) 
+        public StocksService(IStocksRepository stocksRepository, ILogger<StocksService> logger) 
         {
             _stocksRepository = stocksRepository;
+            _logger = logger;
         }
 
         public async Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? buyOrderRequest)
         {
+            // Log
+            _logger.LogInformation("BuyOrder requested to CreateBuyOrder called from StocksService");
+
             // Check if buyOrderRequest is null
             if (buyOrderRequest == null)
                 throw new ArgumentNullException(nameof(buyOrderRequest));
@@ -39,6 +44,9 @@ namespace StocksApp.Services
 
         public async Task<SellOrderResponse> CreateSellOrder(SellOrderRequest? sellOrderRequest)
         {
+            // Log
+            _logger.LogInformation("SellOrder requested to CreateSellOrder called from StocksService");
+
             // Check if sellOrderRequest is null
             if (sellOrderRequest == null)
                 throw new ArgumentNullException(nameof(sellOrderRequest));
@@ -57,12 +65,18 @@ namespace StocksApp.Services
 
         public async Task<List<BuyOrderResponse>> GetBuyOrders()
         {
+            // Log
+            _logger.LogInformation("GetBuyOrders called from StocksService");
+
             List<BuyOrder> buyOrders = await _stocksRepository.GetBuyOrders();
             return buyOrders.Select(temp => temp.ToBuyOrderResponse()).ToList();
         }
 
         public async Task<List<SellOrderResponse>> GetSellOrders()
         {
+            // Log
+            _logger.LogInformation("GetSellOrders called from StocksService");
+
             List<SellOrder> sellOrders = await _stocksRepository.GetSellOrders();
 
             return sellOrders.Select(temp => temp.ToSellOrderResponse()).ToList();
