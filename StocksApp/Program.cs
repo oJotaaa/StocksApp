@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using StocksApp;
 using StocksApp.Entities;
+using StocksApp.Middleware;
 using StocksApp.Repositories;
 using StocksApp.RepositoryContracts;
 using StocksApp.ServiceContracts;
@@ -35,6 +36,12 @@ builder.Services.AddHttpLogging(options =>
 });
 
 var app = builder.Build();
+
+if (!builder.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandlingMiddleware();
+}
 
 Rotativa.AspNetCore.RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 
