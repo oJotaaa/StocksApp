@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using StocksApp.Entities;
+using StocksApp.Filters.ActionFilters;
 using StocksApp.ServiceContracts;
 using StocksApp.ServiceContracts.DTO;
 using StocksApp.ViewModels;
@@ -68,23 +69,11 @@ namespace StocksApp.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [TypeFilter(typeof(CreateOrderActionFilter))]
         public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrder)
         {
             // Log
             _logger.LogInformation("BuyOrder action called from TradeController with buyOrder: {@buyOrder}", buyOrder);
-
-            if (!ModelState.IsValid) 
-            {
-                ViewBag.ApiKey = _configuration["apiKey"];
-                StockTrade stockTrade = new StockTrade()
-                {
-                    StockSymbol = buyOrder.StockSymbol,
-                    StockName = buyOrder.StockName,
-                    Price = buyOrder.Price,
-                    Quantity = buyOrder.Quantity,
-                };
-                return View("Index", stockTrade);
-            }
 
             buyOrder.DateAndTimeOfOrder = DateTime.Now;
             BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(buyOrder);
@@ -94,23 +83,11 @@ namespace StocksApp.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [TypeFilter(typeof(CreateOrderActionFilter))]
         public async Task<IActionResult> SellOrder(SellOrderRequest sellOrder)
         {
             // Log
             _logger.LogInformation("SellOrder action called from TradeController with sellOrder: {@sellOrder}", sellOrder);
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.ApiKey = _configuration["apiKey"];
-                StockTrade stockTrade = new StockTrade()
-                {
-                    StockSymbol = sellOrder.StockSymbol,
-                    StockName = sellOrder.StockName,
-                    Price = sellOrder.Price,
-                    Quantity = sellOrder.Quantity,
-                };
-                return View("Index", stockTrade);
-            }
 
             sellOrder.DateAndTimeOfOrder = DateTime.Now;
             SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(sellOrder);
