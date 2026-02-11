@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Ops!";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Garante que o menu/rodapé do site apareçam
+}
+
+<div class="error-container">
+    <div class="error-content">
+        <img src="~/images/error.svg" alt="Erro inesperado" class="error-image" />
+
+        <h1 class="error-title">Ops! Algo deu errado.</h1>
+
+        <p class="error-message">
+            Não se preocupe, a culpa não é sua. <br />
+            Nossa equipe de engenheiros já foi notificada e estamos consertando isso.
+        </p>
+
+        <a asp-controller="Trade" asp-action="Index" class="btn-home">
+            Voltar para o Início
+        </a>
+    </div>
+</div>
