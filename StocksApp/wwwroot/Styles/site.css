@@ -184,3 +184,60 @@
         margin-bottom: 30px;
     }
 }
+
+/* Estilos da Página de Erro */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-content {
+    max-width: 500px;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    /* Sombra suave para dar destaque */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.error-image {
+    max-width: 100%;
+    height: auto;
+    width: 250px;
+    margin-bottom: 1.5rem;
+}
+
+.error-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.error-message {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.btn-home {
+    display: inline-block;
+    background-color: #6c5ce7;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-home:hover {
+        background-color: #5649c0;
+        color: #fff;
+        text-decoration: none;
+    }
