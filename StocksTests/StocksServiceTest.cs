@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using StocksApp.Entities;
 using StocksApp.RepositoryContracts;
@@ -18,12 +19,18 @@ namespace StocksTests
         private readonly Mock<IStocksRepository> _stocksRepositoryMock;
 
         private readonly Fixture _fixture;
+        private readonly ILogger<StocksService> _logger;
+
+        private readonly Mock<ILogger<StocksService>> _loggerMock;
 
         public StocksServiceTest()
         {
             _fixture = new Fixture();
+            _loggerMock = new Mock<ILogger<StocksService>>();
+            _logger = _loggerMock.Object;
+
             _stocksRepositoryMock = new Mock<IStocksRepository>();
-            _stocksService = new StocksService(_stocksRepositoryMock.Object);
+            _stocksService = new StocksService(_stocksRepositoryMock.Object, _logger);
         }
 
         #region CreateBuyOrderTests
