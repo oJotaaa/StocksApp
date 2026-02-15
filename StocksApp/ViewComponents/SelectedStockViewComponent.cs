@@ -5,17 +5,17 @@ namespace StocksApp.ViewComponents
 {
     public class SelectedStockViewComponent : ViewComponent
     {
-        private readonly IFinnhubService _finnhubService;
+        private readonly IFinnhubGetterService _finnhubGetterService;
 
-        public SelectedStockViewComponent(IFinnhubService finnhubService)
+        public SelectedStockViewComponent(IFinnhubGetterService finnhubGetterService)
         {
-            _finnhubService = finnhubService;
+            _finnhubGetterService = finnhubGetterService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string stockSymbol)
         {
-            Dictionary<string, object>? companyProfile = await _finnhubService.GetCompanyProfile(stockSymbol);
-            Dictionary<string, object>? stockPriceQuote = await _finnhubService.GetStockPriceQuote(stockSymbol);
+            Dictionary<string, object>? companyProfile = await _finnhubGetterService.GetCompanyProfile(stockSymbol);
+            Dictionary<string, object>? stockPriceQuote = await _finnhubGetterService.GetStockPriceQuote(stockSymbol);
 
             if (companyProfile != null && stockPriceQuote != null)
             {
