@@ -10,14 +10,12 @@ namespace StocksApp.Controllers
     {
         private readonly TradingOptions _tradingOptions;
         private readonly ILogger<StocksController> _logger;
-        private readonly IFinnhubService _finnhubService;
-        private readonly IStocksService _stocksService;
+        private readonly IFinnhubGetterService _finnhubGetterService;
 
-        public StocksController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService, IStocksService stocksService, ILogger<StocksController> logger)
+        public StocksController(IOptions<TradingOptions> tradingOptions, IFinnhubGetterService finnhubGetterService, ILogger<StocksController> logger)
         {
             _tradingOptions = tradingOptions.Value;
-            _finnhubService = finnhubService;
-            _stocksService = stocksService;
+            _finnhubGetterService = finnhubGetterService;
             _logger = logger;
         }
 
@@ -31,7 +29,7 @@ namespace StocksApp.Controllers
             string? topPopularStocksString = _tradingOptions.Top25PopularStocks;
             string[] topPopularStocks = topPopularStocksString!.Split(",");
 
-            List<Dictionary<string, string>>? stocksFromGetStocks = await _finnhubService.GetStocks();
+            List<Dictionary<string, string>>? stocksFromGetStocks = await _finnhubGetterService.GetStocks();
 
             List<Stock> stocks = stocksFromGetStocks!.Where(stock => topPopularStocks.Contains(stock["symbol"])).Select(stock => new Stock() { StockName = stock["description"], StockSymbol = stock["symbol"] }).ToList();
             return View("Explore", stocks);

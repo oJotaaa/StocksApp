@@ -16,16 +16,18 @@ namespace StocksApp.Controllers
         private readonly TradingOptions _tradingOptions;
         private readonly IConfiguration _configuration;
         private readonly ILogger<TradeController> _logger;
-        private readonly IFinnhubService _finnhubService;
-        private readonly IStocksService _stocksService;
+        private readonly IFinnhubGetterService _finnhubGetterService;
+        private readonly IStocksGetterService _stocksGetterService;
+        private readonly IStocksCreateService _stocksCreateService;
 
-        public TradeController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService, IConfiguration configuration, IStocksService stocksService, ILogger<TradeController> logger)
+        public TradeController(IOptions<TradingOptions> tradingOptions, IFinnhubGetterService finnhubGetterService, IConfiguration configuration, IStocksCreateService stocksCreateService, IStocksGetterService stocksGetterService, ILogger<TradeController> logger)
         {
-            _tradingOptions = tradingOptions.Value;
-            _finnhubService = finnhubService;
-            _configuration = configuration;
-            _stocksService = stocksService;
             _logger = logger;
+            _configuration = configuration;
+            _tradingOptions = tradingOptions.Value;
+            _finnhubGetterService = finnhubGetterService;
+            _stocksCreateService = stocksCreateService;
+            _stocksGetterService = stocksGetterService;
         }
 
         [Route("/")]
@@ -46,8 +48,8 @@ namespace StocksApp.Controllers
                 selectedStockSymbol = stockSymbol;
 
             uint defaultOrderQuantity = _tradingOptions.DefaultOrderQuantity;
-            var companyProfile = await _finnhubService.GetCompanyProfile(selectedStockSymbol!);
-            var stockPriceQuote = await _finnhubService.GetStockPriceQuote(selectedStockSymbol!);
+            var companyProfile = await _finnhubGetterService.GetCompanyProfile(selectedStockSymbol!);
+            var stockPriceQuote = await _finnhubGetterService.GetStockPriceQuote(selectedStockSymbol!);
 
             StockTrade stockTrade = new StockTrade() { StockSymbol = selectedStockSymbol };
 
@@ -70,13 +72,13 @@ namespace StocksApp.Controllers
         [HttpPost]
         [Route("[action]")]
         [TypeFilter(typeof(CreateOrderActionFilter))]
-        public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrder)
+        public async Task<IActionResult> BuyOrder(BuyOrderRequest orderRequest)
         {
             // Log
-            _logger.LogInformation("BuyOrder action called from TradeController with buyOrder: {@buyOrder}", buyOrder);
+            _logger.LogInformation("BuyOrder action called from TradeController with buyOrder: {@buyOrder}", orderRequest);
 
-            buyOrder.DateAndTimeOfOrder = DateTime.Now;
-            BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(buyOrder);
+            orderRequest.DateAndTimeOfOrder = DateTime.Now;
+            BuyOrderResponse buyOrderResponse = await _stocksCreateService.CreateBuyOrder(orderRequest);
 
             return RedirectToAction("Orders", "Trade");
         }
@@ -84,13 +86,13 @@ namespace StocksApp.Controllers
         [HttpPost]
         [Route("[action]")]
         [TypeFilter(typeof(CreateOrderActionFilter))]
-        public async Task<IActionResult> SellOrder(SellOrderRequest sellOrder)
+        public async Task<IActionResult> SellOrder(SellOrderRequest orderRequest)
         {
             // Log
-            _logger.LogInformation("SellOrder action called from TradeController with sellOrder: {@sellOrder}", sellOrder);
+            _logger.LogInformation("SellOrder action called from TradeController with sellOrder: {@sellOrder}", orderRequest);
 
-            sellOrder.DateAndTimeOfOrder = DateTime.Now;
-            SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(sellOrder);
+            orderRequest.DateAndTimeOfOrder = DateTime.Now;
+            SellOrderResponse sellOrderResponse = await _stocksCreateService.CreateSellOrder(orderRequest);
 
             return RedirectToAction("Orders", "Trade");
         }
@@ -102,8 +104,8 @@ namespace StocksApp.Controllers
             // Log
             _logger.LogInformation("Orders action called from TradeController");
 
-            List<BuyOrderResponse> buyOrders = await _stocksService.GetBuyOrders();
-            List<SellOrderResponse> sellOrders = await _stocksService.GetSellOrders();
+            List<BuyOrderResponse> buyOrders = await _stocksGetterService.GetBuyOrders();
+            List<SellOrderResponse> sellOrders = await _stocksGetterService.GetSellOrders();
             Orders orders = new Orders()
             {
                 BuyOrders = buyOrders,
@@ -120,8 +122,8 @@ namespace StocksApp.Controllers
             // Log
             _logger.LogInformation("OrdersPDF action called from TradeController");
 
-            List<BuyOrderResponse> buyOrders = await _stocksService.GetBuyOrders();
-            List<SellOrderResponse> sellOrders = await _stocksService.GetSellOrders();
+            List<BuyOrderResponse> buyOrders = await _stocksGetterService.GetBuyOrders();
+            List<SellOrderResponse> sellOrders = await _stocksGetterService.GetSellOrders();
             Orders orders = new Orders()
             {
                 BuyOrders = buyOrders,
