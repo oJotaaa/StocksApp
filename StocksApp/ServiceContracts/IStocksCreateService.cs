@@ -2,11 +2,9 @@
 
 namespace StocksApp.ServiceContracts
 {
-    public interface IStocksService
+    public interface IStocksCreateService
     {
         Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? buyOrderRequest);
         Task<SellOrderResponse> CreateSellOrder(SellOrderRequest? sellOrderRequest);
-        Task<List<BuyOrderResponse>> GetBuyOrders();
-        Task<List<SellOrderResponse>> GetSellOrders();
     }
 }

@@ -8,14 +8,14 @@ using StocksApp.Services.Helpers;
 
 namespace StocksApp.Services
 {
-    public class StocksService : IStocksService
+    public class StocksCreateService : IStocksCreateService
     {
         // Private fields
         private readonly IStocksRepository _stocksRepository;
-        private readonly ILogger<StocksService> _logger;
+        private readonly ILogger<StocksCreateService> _logger;
 
         // Constructor
-        public StocksService(IStocksRepository stocksRepository, ILogger<StocksService> logger) 
+        public StocksCreateService(IStocksRepository stocksRepository, ILogger<StocksCreateService> logger) 
         {
             _stocksRepository = stocksRepository;
             _logger = logger;
@@ -61,25 +61,6 @@ namespace StocksApp.Services
 
             // Return a sellOrderResponse
             return sellOrder.ToSellOrderResponse();
-        }
-
-        public async Task<List<BuyOrderResponse>> GetBuyOrders()
-        {
-            // Log
-            _logger.LogInformation("GetBuyOrders called from StocksService");
-
-            List<BuyOrder> buyOrders = await _stocksRepository.GetBuyOrders();
-            return buyOrders.Select(temp => temp.ToBuyOrderResponse()).ToList();
-        }
-
-        public async Task<List<SellOrderResponse>> GetSellOrders()
-        {
-            // Log
-            _logger.LogInformation("GetSellOrders called from StocksService");
-
-            List<SellOrder> sellOrders = await _stocksRepository.GetSellOrders();
-
-            return sellOrders.Select(temp => temp.ToSellOrderResponse()).ToList();
         }
     }
 }

@@ -4,12 +4,12 @@ using System.Text.Json;
 
 namespace StocksApp.Services
 {
-    public class FinnhubService : IFinnhubService
+    public class FinnhubGetterService : IFinnhubGetterService
     {
         private readonly IFinnhubRepository _finnhubRepository;
-        private readonly ILogger<FinnhubService> _logger;
+        private readonly ILogger<FinnhubGetterService> _logger;
 
-        public FinnhubService(IFinnhubRepository finnhubRepository, ILogger<FinnhubService> logger)
+        public FinnhubGetterService(IFinnhubRepository finnhubRepository, ILogger<FinnhubGetterService> logger)
         {
             _finnhubRepository = finnhubRepository;
             _logger = logger;
@@ -43,17 +43,6 @@ namespace StocksApp.Services
             _logger.LogInformation("GetStocks called from FinnhubService");
 
             return await _finnhubRepository.GetStocks();
-        }
-
-        public async Task<Dictionary<string, object>?> SearchStocks(string stockSymbolToSearch)
-        {
-            // Log
-            _logger.LogInformation("SearchStocks called from FinnhubService for symbolToSearch {StockSymbol}", stockSymbolToSearch);
-
-            if (string.IsNullOrEmpty(stockSymbolToSearch))
-                return null;
-
-            return await _finnhubRepository.SearchStocks(stockSymbolToSearch);
         }
     }
 }
