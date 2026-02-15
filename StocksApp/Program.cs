@@ -25,8 +25,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
-builder.Services.AddScoped<IFinnhubService, FinnhubService>();
-builder.Services.AddScoped<IStocksService, StocksService>();
+builder.Services.AddScoped<IFinnhubGetterService, FinnhubGetterService>();
+builder.Services.AddScoped<IFinnhubSearchService, FinnhubSearchService>();
+builder.Services.AddScoped<IStocksCreateService, StocksCreateService>();
+builder.Services.AddScoped<IStocksGetterService, StocksGetterService>();
 builder.Services.AddScoped<IFinnhubRepository, FinnhubRepository>();
 builder.Services.AddScoped<IStocksRepository, StocksRepository>();
 
