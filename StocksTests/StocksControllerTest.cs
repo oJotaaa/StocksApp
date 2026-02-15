@@ -23,12 +23,12 @@ namespace StocksTests
         private readonly IOptions<TradingOptions> _options;
         private readonly ILogger<StocksController> _logger;
 
-        private readonly Mock<IStocksService> _stocksServiceMock;
-        private readonly Mock<IFinnhubService> _finnhubServiceMock;
+        private readonly Mock<IStocksCreateService> _stocksServiceMock;
+        private readonly Mock<IFinnhubGetterService> _finnhubServiceMock;
         private readonly Mock<ILogger<StocksController>> _loggerMock;
 
-        private readonly IStocksService _stocksService;
-        private readonly IFinnhubService _finnhubService;
+        private readonly IStocksCreateService _stocksService;
+        private readonly IFinnhubGetterService _finnhubService;
 
         private readonly StocksController _stocksController;
 
@@ -40,13 +40,13 @@ namespace StocksTests
             _loggerMock = new Mock<ILogger<StocksController>>();
             _logger = _loggerMock.Object;
 
-            _stocksServiceMock = new Mock<IStocksService>();
-            _finnhubServiceMock = new Mock<IFinnhubService>();
+            _stocksServiceMock = new Mock<IStocksCreateService>();
+            _finnhubServiceMock = new Mock<IFinnhubGetterService>();
 
             _stocksService = _stocksServiceMock.Object;
             _finnhubService = _finnhubServiceMock.Object;
 
-            _stocksController = new StocksController(_options, _finnhubService, _stocksService, _logger);
+            _stocksController = new StocksController(_options, _finnhubService, _logger);
         }
 
         [Fact]
