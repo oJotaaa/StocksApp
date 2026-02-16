@@ -1,4 +1,12 @@
 <Solution>
-  <Project Path="StocksApp/StocksApp.csproj" />
-  <Project Path="StocksTests/StocksTests.csproj" Id="84334052-498b-4abc-b404-f7298baf3777" />
+  <Folder Name="/src/">
+    <Project Path="src/StocksApp.Core/StocksApp.Core.csproj" />
+    <Project Path="src/StocksApp.Infrastructure/StocksApp.Infrastructure.csproj" />
+    <Project Path="src/StocksApp.UI/StocksApp.UI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/StocksApp.ControllerTests/StocksApp.ControllerTests.csproj" />
+    <Project Path="tests/StocksApp.IntegrationTests/StocksApp.IntegrationTests.csproj" />
+    <Project Path="tests/StocksApp.ServiceTests/StocksApp.ServiceTests.csproj" />
+  </Folder>
 </Solution>

@@ -1,4 +1,5 @@
-﻿using StocksApp.RepositoryContracts;
+﻿using Microsoft.Extensions.Logging;
+using StocksApp.RepositoryContracts;
 using StocksApp.ServiceContracts;
 using System.Text.Json;
 

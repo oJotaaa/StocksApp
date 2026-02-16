@@ -1,4 +1,5 @@
-﻿using StocksApp.RepositoryContracts;
+﻿using Microsoft.Extensions.Configuration;
+using StocksApp.RepositoryContracts;
 using System.Text.Json;
 
 namespace StocksApp.Repositories
