@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using StocksApp.RepositoryContracts;
 using System.Text.Json;
 
@@ -8,11 +9,13 @@ namespace StocksApp.Repositories
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<FinnhubRepository> _logger;
 
-        public FinnhubRepository(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public FinnhubRepository(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<FinnhubRepository> logger)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<Dictionary<string, object>?> GetCompanyProfile(string stockSymbol)
@@ -31,7 +34,7 @@ namespace StocksApp.Repositories
             else
             {
                 string errorResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error fetching company profile: {errorResponse}");
+                _logger.LogError("Error fetching company profile for symbol {StockSymbol}: {ErrorResponse}", stockSymbol, errorResponse);
                 return null;
             }
         }
@@ -52,7 +55,7 @@ namespace StocksApp.Repositories
             else
             {
                 string errorResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error fetching company price quote: {errorResponse}");
+                _logger.LogError("Error fetching stock price quote for symbol {StockSymbol}: {ErrorResponse}", stockSymbol, errorResponse);
                 return null;
             }
         }
@@ -73,7 +76,7 @@ namespace StocksApp.Repositories
             else
             {
                 string errorResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error fetching stocks: {errorResponse}");
+                _logger.LogError("Error fetching stocks list: {ErrorResponse}", errorResponse);
                 return null;
             }
         }
@@ -94,7 +97,7 @@ namespace StocksApp.Repositories
             else
             {
                 string errorResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error fetching stocks: {errorResponse}");
+                _logger.LogError("Error searching stocks for query {StockSymbolToSearch}: {ErrorResponse}", stockSymbolToSearch, errorResponse);
                 return null;
             }
         }
